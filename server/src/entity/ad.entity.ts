@@ -1,4 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+} from 'typeorm';
 
 enum AdType {
   RENT = 'RENT',
@@ -40,6 +45,9 @@ export class Ad {
 
   @Column({ nullable: true, type: 'integer' })
   bathrooms: number;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
   //   @Column({ name: 'image' })
   //   image: string;

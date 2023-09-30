@@ -4,6 +4,8 @@ import { Ad } from '../entity/ad.entity';
 import { createAddValidation } from '../validation/ad.validation';
 import axios from 'axios';
 
+const cache = {};
+
 export const adController = {
   getAllAds: async (req: Request, res: Response) => {
     try {
@@ -32,10 +34,17 @@ export const adController = {
   findSpecificArea: async (req: Request, res: Response) => {
     try {
       const area = req.query.area as string;
-      const response = await axios.get(
-        `https://4ulq3vb3dogn4fatjw3uq7kqby0dweob.lambda-url.eu-central-1.on.aws/?input=${area}`
-      );
-      res.json(response.data);
+
+      if (cache[area]) {
+        res.json(JSON.parse(cache[area]));
+      } else {
+        const response = await axios.get(
+          `https://4ulq3vb3dogn4fatjw3uq7kqby0dweob.lambda-url.eu-central-1.on.aws/?input=${area}`
+        );
+        const data = response.data;
+        cache[area] = JSON.stringify(data);
+        res.json(data);
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal Server Error' });
