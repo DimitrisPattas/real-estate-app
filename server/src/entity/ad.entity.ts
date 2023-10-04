@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
-enum AdType {
+export enum AdType {
   RENT = 'RENT',
   BUY = 'BUY',
   EXCHANGE = 'EXCHANGE',
@@ -28,30 +28,24 @@ export class Ad {
   })
   type: AdType;
 
-  @Column({ name: 'area' })
+  @Column({ name: 'area', nullable: false })
   area: string;
 
-  //   @Column({ type: 'jsonb', nullable: true })
-  //   areaDetails: { placeId: string; mainText: string; secondaryText: string }[];
+  @Column({ name: 'place_id', nullable: false })
+  placeId: string;
 
-  @Column({ name: 'price', type: 'integer' })
+  @Column({ name: 'price', type: 'integer', nullable: false })
   price: number;
 
   @Column({ name: 'description', nullable: true, type: 'text' })
   description: string;
 
-  @Column({ nullable: true, type: 'integer' })
+  @Column({ nullable: false, type: 'integer' })
   level: number;
 
-  @Column({ nullable: true, type: 'integer' })
+  @Column({ nullable: false, type: 'integer' })
   bathrooms: number;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
-
-  //   @Column({ name: 'image' })
-  //   image: string;
-
-  //   @Column('text', { array: true, nullable: true })
-  //   images: string[];
 }

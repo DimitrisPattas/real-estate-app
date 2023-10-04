@@ -4,7 +4,8 @@
   "description": "real estate server app",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.ts"
+    "start": "nodemon src/index.ts",
+    "ads:seed": "ts-node src/seeder/ad.seeder.ts"
   },
   "keywords": [],
   "author": "Dimitris Pattas",
