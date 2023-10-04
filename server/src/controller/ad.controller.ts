@@ -49,7 +49,7 @@ export const adController = {
         res.json(JSON.parse(cache[area]));
       } else {
         const response = await axios.get(
-          `https://4ulq3vb3dogn4fatjw3uq7kqby0dweob.lambda-url.eu-central-1.on.aws/?input=${area}`
+          `${process.env.AREA_API_URL}/?input=${area}`
         );
         const data = response.data;
         cache[area] = JSON.stringify(data);
