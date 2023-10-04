@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export default function SearchAutompleteCustom({ onSelectOption }) {
+export default function SearchAutomplete({ onSelectOption }) {
   const [selectedOption, setSelectedOption] = useState('');
   const [options, setOptions] = useState([]);
 
@@ -53,6 +53,7 @@ export default function SearchAutompleteCustom({ onSelectOption }) {
         value={selectedOption}
         onChange={handleInputChange}
         placeholder="Type in the property's area"
+        autoComplete="off"
       />
       {options.length > 0 && (
         <ul className="bg-white border border-gray-100 w-full mt-2">

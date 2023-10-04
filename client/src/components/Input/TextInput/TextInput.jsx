@@ -28,6 +28,7 @@ export default function TextInput({
         onChange={onChange}
         placeholder={placeholder || ''}
         maxLength={maxLength}
+        autoComplete="off"
       />
     </>
   );

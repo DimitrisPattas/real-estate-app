@@ -16,6 +16,16 @@ export const adController = {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   },
+  getAd: async (req: Request, res: Response) => {
+    try {
+      const id = req.params.id;
+      const ad = await adService.getAdById(id);
+      res.json(ad);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  },
   createNewAd: async (req: Request, res: Response) => {
     try {
       const adData = req.body as Ad;

@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+
+import Loader from '../Loader/Loader';
+import SearchAutomplete from '../Input/SearchAutocomplete/SearchAutomplete';
 import InputNumber from '../Input/InputNumber/InputNumber';
 import SelectInput from '../Input/SelectInput/SelectInput';
 import TextAreaInput from '../Input/TextAreaInput/TextAreaInput';
 import TextInput from '../Input/TextInput/TextInput';
-import SearchAutompleteCustom from '../Input/SearchAutocompleteCustom/SearchAutompleteCustom';
-
-import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
@@ -28,6 +32,7 @@ const validationSchema = Yup.object().shape({
     .matches(/^\d+$/, 'Bathrooms must be a non-negative number'),
   extraDescription: Yup.string(),
 });
+
 export default function NewAd() {
   const [formData, setFormData] = useState({
     title: '',
@@ -38,32 +43,64 @@ export default function NewAd() {
     bathrooms: null,
     extraDescription: '',
   });
-
   const [validationErrors, setValidationErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log('change', name, value);
     setFormData({
       ...formData,
       [name]: value,
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const isValid = async () => {
     try {
-      console.log('Form data is valid:', formData);
       await validationSchema.validate(formData, { abortEarly: false });
       setValidationErrors({});
-      // Data is valid, submit to backend
-      // console.log('Form data is valid:', formData);
+      return true;
     } catch (error) {
       const errors = {};
       error.inner.forEach((e) => {
         errors[e.path] = e.message;
       });
       setValidationErrors(errors);
+      return false;
+    }
+  };
+
+  const sendPostRequest = async () => {
+    try {
+      const body = {
+        title: formData.title,
+        type: formData.type,
+        area: formData.area.mainText,
+        placeId: formData.area.placeId,
+        price: formData.priceInEuros,
+        level: formData.level,
+        bathrooms: formData.bathrooms,
+        description: formData.extraDescription,
+      };
+
+      await axios.post('http://localhost:8080/api/ads/new', body);
+      navigate('/');
+    } catch (error) {
+      console.error('Error sending post request:', error);
+      alert('Something went wrong with the request. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const isValidForm = await isValid();
+
+    if (isValidForm) {
+      setIsLoading(true);
+      await sendPostRequest();
     }
   };
 
@@ -82,93 +119,101 @@ export default function NewAd() {
   ];
 
   return (
-    <div className="flex justify-center mt-10">
-      <div className="w-full max-w-xs md:max-w-xl">
-        <form
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-          onSubmit={handleSubmit}
-        >
-          <div className="mb-4">
-            <TextInput
-              label="Title"
-              id="title"
-              name="title"
-              type="text"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Classified title up to 155 chars"
-              maxLength="155"
-              isRequired={true}
-            />
-            <span className="text-red-500">{validationErrors.title}</span>
-          </div>
-          <div className="mb-6">
-            <SelectInput
-              label="Type"
-              options={typeOptions}
-              value={formData.type}
-              onChange={handleChange}
-              isRequired={true}
-            />
-            <span className="text-red-500">{validationErrors.type}</span>
-          </div>
-          <div className="mb-6">
-            <SearchAutompleteCustom onSelectOption={handleSelectOption} />
-            <span className="text-red-500">{validationErrors.area}</span>
-          </div>
-          <div className="mb-6">
-            <InputNumber
-              title="Price in euros"
-              placeholder="Amount"
-              name="priceInEuros"
-              isRequired={true}
-              onChange={handleChange}
-            />
-            <span className="text-red-500">
-              {validationErrors.priceInEuros}
-            </span>
-          </div>
-          <div className="mb-6">
-            <InputNumber
-              title="Level"
-              placeholder="e.g. -1, 0, 1, 2 ..."
-              name="level"
-              isRequired={true}
-              min={-2}
-              onChange={handleChange}
-            />
-            <span className="text-red-500">{validationErrors.level}</span>
-          </div>
-          <div className="mb-6">
-            <InputNumber
-              title="Bathrooms"
-              placeholder="e.g. 0, 1, 2 ..."
-              name="bathrooms"
-              isRequired={true}
-              onChange={handleChange}
-            />
-            <span className="text-red-500">{validationErrors.bathrooms}</span>
-          </div>
-          <div className="mb-6">
-            <TextAreaInput
-              label="Extra description"
-              id="extra_description"
-              name="extraDescription"
-              value={formData.extraDescription}
-              onChange={handleChange}
-              placeholder="Type here"
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
-              type="submit"
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className="flex justify-center mt-10">
+          <div className="w-full max-w-sm md:max-w-xl">
+            <form
+              className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+              onSubmit={handleSubmit}
             >
-              Submit
-            </button>
+              <div className="mb-4">
+                <TextInput
+                  label="Title"
+                  id="title"
+                  name="title"
+                  type="text"
+                  value={formData.title}
+                  onChange={handleChange}
+                  placeholder="Classified title up to 155 chars"
+                  maxLength="155"
+                  isRequired={true}
+                />
+                <span className="text-red-500">{validationErrors.title}</span>
+              </div>
+              <div className="mb-6">
+                <SelectInput
+                  label="Type"
+                  options={typeOptions}
+                  value={formData.type}
+                  onChange={handleChange}
+                  isRequired={true}
+                />
+                <span className="text-red-500">{validationErrors.type}</span>
+              </div>
+              <div className="mb-6">
+                <SearchAutomplete onSelectOption={handleSelectOption} />
+                <span className="text-red-500">{validationErrors.area}</span>
+              </div>
+              <div className="mb-6">
+                <InputNumber
+                  title="Price in euros"
+                  placeholder="Amount"
+                  name="priceInEuros"
+                  isRequired={true}
+                  onChange={handleChange}
+                />
+                <span className="text-red-500">
+                  {validationErrors.priceInEuros}
+                </span>
+              </div>
+              <div className="mb-6">
+                <InputNumber
+                  title="Level"
+                  placeholder="e.g. -1, 0, 1, 2 ..."
+                  name="level"
+                  isRequired={true}
+                  min={-2}
+                  onChange={handleChange}
+                />
+                <span className="text-red-500">{validationErrors.level}</span>
+              </div>
+              <div className="mb-6">
+                <InputNumber
+                  title="Bathrooms"
+                  placeholder="e.g. 0, 1, 2 ..."
+                  name="bathrooms"
+                  isRequired={true}
+                  onChange={handleChange}
+                />
+                <span className="text-red-500">
+                  {validationErrors.bathrooms}
+                </span>
+              </div>
+              <div className="mb-6">
+                <TextAreaInput
+                  label="Extra description"
+                  id="extra_description"
+                  name="extraDescription"
+                  value={formData.extraDescription}
+                  onChange={handleChange}
+                  placeholder="Type here"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }

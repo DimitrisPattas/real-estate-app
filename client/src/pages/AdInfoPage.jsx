@@ -1,5 +1,6 @@
 import React from 'react';
+import AdInfo from '../components/AdInfo/AdInfo';
 
 export default function AdInfoPage() {
-  return <div>AdInfoPage</div>;
+  return <AdInfo />;
 }
