@@ -4,6 +4,7 @@ import axios from 'axios';
 export default function SearchAutomplete({ onSelectOption }) {
   const [selectedOption, setSelectedOption] = useState('');
   const [options, setOptions] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const fetchOptions = async (value) => {
     try {
@@ -16,8 +17,14 @@ export default function SearchAutomplete({ onSelectOption }) {
         }
       );
       setOptions(response.data);
+      if (response.data.length === 0) {
+        setErrorMessage('No options found.');
+      } else {
+        setErrorMessage(null);
+      }
     } catch (error) {
       console.error(error);
+      setErrorMessage('Error fetching options. Please try again.');
     }
   };
 
@@ -68,6 +75,7 @@ export default function SearchAutomplete({ onSelectOption }) {
           ))}
         </ul>
       )}
+      {errorMessage && <div className="text-red-500">{errorMessage}</div>}
     </>
   );
 }
