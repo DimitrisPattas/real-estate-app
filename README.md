@@ -18,6 +18,7 @@ The Real Estate Classifieds App is a web application for listing and browsing re
 6. run `npm run start`
 7. at client folder run `npm install`
 8. run `npm run start`
+9. Open your web browser in incognito mode and go to `http://localhost:3000`.
 
 # External Libraries
 
