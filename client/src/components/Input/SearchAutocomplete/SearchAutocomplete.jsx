@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export default function SearchAutomplete({ onSelectOption }) {
+export default function SearchAutocomplete({ onSelectOption }) {
   const [selectedOption, setSelectedOption] = useState('');
   const [options, setOptions] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);

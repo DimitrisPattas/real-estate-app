@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import Loader from '../Loader/Loader';
-import SearchAutomplete from '../Input/SearchAutocomplete/SearchAutomplete';
+import SearchAutocomplete from '../Input/SearchAutocomplete/SearchAutocomplete';
 import InputNumber from '../Input/InputNumber/InputNumber';
 import SelectInput from '../Input/SelectInput/SelectInput';
 import TextAreaInput from '../Input/TextAreaInput/TextAreaInput';
@@ -154,7 +154,7 @@ export default function NewAd() {
                 <span className="text-red-500">{validationErrors.type}</span>
               </div>
               <div className="mb-6">
-                <SearchAutomplete onSelectOption={handleSelectOption} />
+                <SearchAutocomplete onSelectOption={handleSelectOption} />
                 <span className="text-red-500">{validationErrors.area}</span>
               </div>
               <div className="mb-6">
