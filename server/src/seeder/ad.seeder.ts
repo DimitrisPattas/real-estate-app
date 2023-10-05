@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { AppDataSource as dataSource } from '../config/database.config';
 import { Ad, AdType } from '../entity/ad.entity';
 import { adsData } from './ads.data';
