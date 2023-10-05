@@ -1,6 +1,7 @@
 # Real Estate Classifieds App
 
-![real_estate_home](https://github.com/DimitrisPattas/real-estate-app/assets/142221795/f38b31f6-faf7-4355-93b6-fb95a877cead)
+![real_estate_home](https://github.com/DimitrisPattas/real-estate-app/assets/142221795/ded759a1-36c5-465b-b8c0-dad04c387a54)
+
 
 # Overview
 The Real Estate Classifieds App is a web application for listing and browsing real estate properties. Users can create new listings with details like title, type, area, price, level, bathrooms, and additional descriptions.
