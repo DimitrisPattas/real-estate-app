@@ -11,19 +11,15 @@ The Real Estate Classifieds App is a web application for listing and browsing re
 1. Create database schema and name it real_estate_db
 2. Clone the repository: git clone `https://github.com/DimitrisPattas/real-estate-app.git`
 3. at server folder run `npm install`
-4. update .env file at server/.env and set database details and area api url 
-5. at server folder run `npm ads:seed`
-6. run `npm start`
+4. update .env file at server/.env and set Database connection details and AREA_API_URL for autocomplete API endpoint. 
+5. at server folder run `npm run ads:seed`
+6. run `npm run start`
 7. at client folder run `npm install`
-8. run `npm start`
+8. run `npm run start`
 
 # External Libraries
 
 This project makes use of several external libraries and frameworks to enhance functionality and improve development efficiency. Here are the key dependencies:
-
-## Yup
-
-[Yup](https://github.com/jquense/yup) is a JavaScript schema builder for value parsing and validation. It is used in this project to handle form validation.
 
 ## Tailwind CSS
 
@@ -36,5 +32,9 @@ This project makes use of several external libraries and frameworks to enhance f
 ## TypeORM
 
 [TypeORM](https://typeorm.io/) is an ORM (Object-Relational Mapping) library for TypeScript and JavaScript. It allows seamless interaction with databases by providing a high-level, object-oriented API. This project leverages TypeORM for database operations and management.
+
+## Yup
+
+[Yup](https://github.com/jquense/yup) is a JavaScript schema builder for value parsing and validation. It is used in this project to handle form validation.
 
 
