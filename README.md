@@ -13,12 +13,12 @@ The Real Estate Classifieds App is a web application for listing and browsing re
 # Setup
 1. Create database schema and name it real_estate_db
 2. Clone the repository: git clone `https://github.com/DimitrisPattas/real-estate-app.git`
-3. at server folder run `npm install`
-4. update .env file at server/.env and set Database connection details and AREA_API_URL for autocomplete API endpoint. 
-5. at server folder run `npm run ads:seed`
-6. run `npm run start`
-7. at client folder run `npm install`
-8. run `npm run start`
+3. At server folder run `npm install`
+4. Update .env file at server/.env and set Database connection details and AREA_API_URL for autocomplete API endpoint. 
+5. At server folder run `npm run ads:seed`
+6. Run `npm run start`
+7. At client folder run `npm install`
+8. Run `npm run start`
 9. Open your web browser in incognito mode and go to `http://localhost:3000`.
 
 # External Libraries
